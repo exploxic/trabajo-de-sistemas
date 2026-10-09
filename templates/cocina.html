@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pantalla de Cocina</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #2c3e50; color: white; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #34495e; padding-bottom: 15px; }
+        .btn-back { background: #7f8c8d; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 600; }
+        .grid-orders { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .order-card { background: #34495e; border-radius: 10px; padding: 20px; border-left: 6px solid #e67e22; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .order-card.preparacion { border-left-color: #3498db; }
+        .order-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 18px; margin-bottom: 10px; border-bottom: 1px solid #4a6278; padding-bottom: 5px; }
+        .order-body { margin-bottom: 15px; font-size: 15px; }
+        .order-body p { margin-bottom: 8px; }
+        .badge-notas { background: #e74c3c; color: white; padding: 4px 8px; border-radius: 4px; font-size: 13px; display: inline-block; }
+        .btn-action { width: 100%; padding: 10px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s; font-size: 14px; }
+        .btn-prep { background: #e67e22; color: white; }
+        .btn-prep:hover { background: #d35400; }
+        .btn-ready { background: #2ecc71; color: white; }
+        .btn-ready:hover { background: #27ae60; }
+        .empty-state { text-align: center; width: 100%; grid-column: 1 / -1; padding: 50px; color: #bdc3c7; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>Órdenes Activas en Cocina</h2>
+        <a href="/" class="btn-back">← Volver al inicio</a>
+    </div>
+
+    <div class="grid-orders">
+        {% if not ordenes %}
+            <div class="empty-state">
+                 No hay órdenes pendientes por cocinar en este momento.
+            </div>
+        {% endif %}
+
+        {% for orden in ordenes %}
+            <div class="order-card {% if orden.estado == 'En preparación' %}preparacion{% endif %}">
+                <div class="order-header">
+                    <span>Orden #{{ orden.id }}</span>
+                    <span style="font-size: 12px; color: #bdc3c7;">{{ orden.fecha_hora.strftime('%H:%M') if orden.fecha_hora else '' }}</span>
+                </div>
+                
+                <div class="order-body">
+                    <p><strong>Platillo:</strong> {{ orden.platillo }}</p>
+                    <p><strong>Estado:</strong> {{ orden.estado }}</p>
+                    {% if orden.notas %}
+                        <p><span class="badge-notas">Nota: {{ orden.notas }}</span></p>
+                    {% endif %}
+                </div>
+
+                <form action="/cambiar_estado/{{ orden.id }}" method="POST">
+                    {% if orden.estado == 'Pendiente' %}
+                        <input type="hidden" name="estado" value="En preparación">
+                        <button type="submit" class="btn-action btn-prep">▶ Iniciar Preparación</button>
+                    {% elif orden.estado == 'En preparación' %}
+                        <input type="hidden" name="estado" value="Listo">
+                        <button type="submit" class="btn-action btn-ready">✔ Marcar como Listo</button>
+                    {% endif %}
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

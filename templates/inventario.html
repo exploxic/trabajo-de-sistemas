@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Inventarios</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f6f9; color: #333; padding: 20px; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .btn-back { background: #95a5a6; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 600; }
+        .container { max-width: 900px; margin: 0 auto; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        h2, h3 { color: #2c3e50; margin-bottom: 15px; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 12px 15px; border-bottom: 1px solid #eee; }
+        th { background-color: #f8f9fa; color: #2c3e50; font-weight: 600; }
+        .badge { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block; }
+        .badge-ok { background-color: #e8f8f5; color: #2ecc71; }
+        .badge-alert { background-color: #fadbd8; color: #e74c3c; }
+        .form-inline { display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap; }
+        .form-group { flex: 1; min-width: 180px; }
+        label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px; }
+        select, input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+        .btn-add { background: #2ecc71; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+        .btn-add:hover { background: #27ae60; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <h2>Control de Inventario en Tiempo Real</h2>
+            <a href="/" class="btn-back">← Volver al inicio</a>
+        </div>
+
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ingrediente</th>
+                        <th>Stock Disponible</th>
+                        <th>Unidad</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ingrediente in ingredientes %}
+                    <tr>
+                        <td><strong>{{ ingrediente.nombre }}</strong></td>
+                        <td>{{ ingrediente.cantidad_disponible }}</td>
+                        <td>{{ ingrediente.unidad_medida }}</td>
+                        <td>
+                            {% if ingrediente.cantidad_disponible <= ingrediente.stock_minimo %}
+                                <span class="badge badge-alert">⚠ Reabastecer</span>
+                            {% else %}
+                                <span class="badge badge-ok">✓ Correcto</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h3>Entrada de Proveedores (Reabastecimiento)</h3>
+            <form action="/reabastecer" method="POST" class="form-inline">
+                <div class="form-group">
+                    <label>Ingrediente:</label>
+                    <select name="ingrediente_id" required>
+                        {% for ingrediente in ingredientes %}
+                            <option value="{{ ingrediente.id }}">{{ ingrediente.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Cantidad a agregar:</label>
+                    <input type="number" step="0.01" name="cantidad" placeholder="Ej. 500" required>
+                </div>
+
+                <button type="submit" class="btn-add">+ Registrar Entrada</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

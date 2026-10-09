@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Restaurante</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f6f9; color: #333; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+        .container { background: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); text-align: center; max-width: 500px; width: 100%; }
+        h1 { color: #2c3e50; font-size: 24px; margin-bottom: 10px; }
+        p { color: #7f8c8d; margin-bottom: 30px; font-size: 14px; }
+        .menu-grid { display: flex; flex-direction: column; gap: 15px; }
+        .btn-menu { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 20px; background-color: #3498db; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; transition: all 0.2s ease; }
+        .btn-menu:hover { background-color: #2980b9; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3); }
+        .btn-cocina { background-color: #e67e22; }
+        .btn-cocina:hover { background-color: #d35400; box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3); }
+        .btn-inventario { background-color: #2ecc71; }
+        .btn-inventario:hover { background-color: #27ae60; box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Control de Inventarios y Pedidos</h1>
+        <p>Selecciona el módulo al que deseas acceder</p>
+        
+        <div class="menu-grid">
+            <a href="/pedidos" class="btn-menu"> Módulo 1: Punto de Venta (Meseros)</a>
+            <a href="/cocina" class="btn-menu btn-cocina"> Módulo 2: Pantalla de Cocina</a>
+            <a href="/inventario" class="btn-menu btn-inventario"> Módulo 3: Control de Inventarios</a>
+        </div>
+    </div>
+</body>
+</html>

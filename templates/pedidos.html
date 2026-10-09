@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Punto de Venta - Meseros</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f6f9; color: #333; padding: 20px; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .btn-back { background: #95a5a6; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 600; }
+        .btn-back:hover { background: #7f8c8d; }
+        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); max-width: 600px; margin: 0 auto; }
+        h2 { color: #2c3e50; margin-bottom: 20px; text-align: center; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; color: #34495e; }
+        select, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; outline: none; transition: border 0.2s; }
+        select:focus, textarea:focus { border-color: #3498db; }
+        textarea { resize: vertical; height: 100px; }
+        .btn-submit { width: 100%; background: #3498db; color: white; border: none; padding: 14px; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background 0.2s; }
+        .btn-submit:hover { background: #2980b9; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/" class="btn-back">← Volver al inicio</a>
+    </div>
+
+    <div class="card">
+        <h2>Tomar Pedido (Meseros)</h2>
+        <form action="/crear_pedido" method="POST">
+            <div class="form-group">
+                <label for="platillo">Seleccionar Platillo:</label>
+                <select name="platillo_id" id="platillo" required>
+                    {% for platillo in platillos %}
+                        <option value="{{ platillo.id }}">{{ platillo.nombre }} — ${{ platillo.precio }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="notas">Notas especiales / Modificaciones:</label>
+                <textarea name="notas" id="notas" placeholder="Ejemplo: Sin cebolla, extra salsa, término medio..."></textarea>
+            </div>
+            
+            <button type="submit" class="btn-submit">Enviar Orden a Cocina</button>
+        </form>
+    </div>
+</body>
+</html>
